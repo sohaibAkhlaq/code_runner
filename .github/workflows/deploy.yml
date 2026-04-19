@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Build 🏗️
-        run: npm run build -- --base-href /code_runnr/
+        run: npm run build -- --base-href /code_runner/
 
       - name: Fix SPA Routing 🛠️
         run: cp dist/code-runner/browser/index.html dist/code-runner/browser/404.html

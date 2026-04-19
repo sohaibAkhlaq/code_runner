@@ -1,8 +1,8 @@
-# 🚀 CodeRunnr — MEAN Stack Frontend Showcase
+# 🚀 CodeRunner — MEAN Stack Frontend Showcase
 
 <div align="center">
 
-![CodeRunnr Banner](https://img.shields.io/badge/MEAN%20Stack-Angular%2017%20%7C%20Node.js%20%7C%20Express%20%7C%20MongoDB-6366F1?style=for-the-badge&logo=angular&logoColor=white)
+![CodeRunner Banner](https://img.shields.io/badge/MEAN%20Stack-Angular%2017%20%7C%20Node.js%20%7C%20Express%20%7C%20MongoDB-6366F1?style=for-the-badge&logo=angular&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-17-DD0031?style=for-the-badge&logo=angular&logoColor=white)
 ![SCSS](https://img.shields.io/badge/SCSS-Premium%20Design-CC6699?style=for-the-badge&logo=sass&logoColor=white)
@@ -198,8 +198,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/code_runnr.git
-cd code_runnr
+git clone https://github.com/sohaibAkhlaq/code_runner.git
+cd code_runner
 
 # Install dependencies
 npm install
@@ -212,7 +212,7 @@ npm run dev
 ### Build for Production
 ```bash
 npm run build
-# Output: dist/code_runnr/
+# Output: dist/code_runner/
 ```
 
 ---
