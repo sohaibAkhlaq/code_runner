@@ -10,7 +10,7 @@
 
 **A production-grade competitive coding platform frontend built with Angular 17, demonstrating advanced MEAN stack fundamentals — reactive signals, standalone components, TypeScript services, lazy-loaded routes, and a stunning glassmorphism UI system.**
 
-[Live Demo](#) · [Report Bug](#) · [Request Feature](#)
+[Live Demo](https://sohaibAkhlaq.github.io/code_runner/) · [Report Bug](https://github.com/sohaibAkhlaq/code_runner/issues) · [Request Feature](https://github.com/sohaibAkhlaq/code_runner/issues)
 
 </div>
 
