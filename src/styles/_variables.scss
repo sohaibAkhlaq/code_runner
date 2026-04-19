@@ -1,0 +1,101 @@
+:root {
+  // ─── Backgrounds ───────────────────────────────────────────────────────────
+  --bg-void:      #010208;
+  --bg-base:      #060B14;
+  --bg-surface:   #0B1221;
+  --bg-elevated:  #111827;
+  --bg-overlay:   #172033;
+
+  // ─── Primary Indigo/Violet ──────────────────────────────────────────────────
+  --p-200:  #C7D2FE;
+  --p-300:  #A5B4FC;
+  --p-400:  #818CF8;
+  --p-500:  #6366F1;
+  --p-600:  #4F46E5;
+  --p-700:  #3730A3;
+  --p-glow: rgba(99, 102, 241, 0.30);
+
+  // ─── Accent Cyan ───────────────────────────────────────────────────────────
+  --a-300:  #67E8F9;
+  --a-400:  #22D3EE;
+  --a-500:  #06B6D4;
+  --a-600:  #0891B2;
+  --a-glow: rgba(6, 182, 212, 0.25);
+
+  // ─── Power colors ──────────────────────────────────────────────────────────
+  --violet:   #A855F7;
+  --violet-g: rgba(168,85,247,0.25);
+  --magenta:  #D946EF;
+  --rose:     #F43F5E;
+  --amber:    #F59E0B;
+  --emerald:  #10B981;
+
+  // ─── Status ────────────────────────────────────────────────────────────────
+  --success:        #10B981;
+  --success-muted:  rgba(16, 185, 129, 0.12);
+  --success-glow:   rgba(16, 185, 129, 0.30);
+  --warning:        #F59E0B;
+  --warning-muted:  rgba(245, 158, 11, 0.12);
+  --error:          #EF4444;
+  --error-muted:    rgba(239, 68, 68, 0.12);
+  --error-glow:     rgba(239, 68, 68, 0.30);
+  --info:           #3B82F6;
+  --info-muted:     rgba(59, 130, 246, 0.12);
+
+  // ─── Text ──────────────────────────────────────────────────────────────────
+  --t-primary:   #F1F5F9;
+  --t-secondary: #94A3B8;
+  --t-tertiary:  #475569;
+  --t-disabled:  #2D3B52;
+  --t-code:      #E2E8F0;
+
+  // ─── Borders ───────────────────────────────────────────────────────────────
+  --border-subtle:  rgba(99, 102, 241, 0.06);
+  --border-default: rgba(99, 102, 241, 0.14);
+  --border-strong:  rgba(99, 102, 241, 0.28);
+  --border-active:  rgba(99, 102, 241, 0.60);
+  --border-glow:    rgba(99, 102, 241, 0.80);
+
+  // ─── Gradients ─────────────────────────────────────────────────────────────
+  --grad-primary:   linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #D946EF 100%);
+  --grad-cyan:      linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%);
+  --grad-success:   linear-gradient(135deg, #059669 0%, #10B981 100%);
+  --grad-error:     linear-gradient(135deg, #DC2626 0%, #EF4444 100%);
+  --grad-text:      linear-gradient(90deg, #818CF8 0%, #C084FC 50%, #F472B6 100%);
+  --grad-aurora:    linear-gradient(135deg, #6366F1, #8B5CF6, #06B6D4, #10B981);
+  --grad-hero:      linear-gradient(160deg, #6366F1 0%, #A855F7 40%, #D946EF 70%, #F43F5E 100%);
+  --grad-card:      linear-gradient(145deg, rgba(99,102,241,0.04) 0%, rgba(168,85,247,0.04) 100%);
+
+  // ─── 3D / Depth Shadows ────────────────────────────────────────────────────
+  --shadow-sm:    0 2px 8px rgba(0, 0, 0, 0.50);
+  --shadow-md:    0 4px 20px rgba(0, 0, 0, 0.60);
+  --shadow-lg:    0 8px 36px rgba(0, 0, 0, 0.70);
+  --shadow-xl:    0 20px 60px rgba(0, 0, 0, 0.80);
+  --shadow-glow:  0 0 28px rgba(99, 102, 241, 0.30);
+  --shadow-cyan:  0 0 28px rgba(6, 182, 212, 0.30);
+  --shadow-card:  0 4px 24px rgba(0,0,0,0.60), 0 1px 0 rgba(255,255,255,0.04) inset;
+  --shadow-3d:    0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(99,102,241,0.15), 0 0 60px rgba(99,102,241,0.08);
+
+  // ─── Spacing ───────────────────────────────────────────────────────────────
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 20px;  --sp-6: 24px;  --sp-8: 32px;  --sp-10: 40px;
+  --sp-12: 48px; --sp-16: 64px; --sp-20: 80px; --sp-24: 96px;
+
+  // ─── Radii ─────────────────────────────────────────────────────────────────
+  --r-xs:   4px;
+  --r-sm:   8px;
+  --r-md:   12px;
+  --r-lg:   16px;
+  --r-xl:   24px;
+  --r-2xl:  32px;
+  --r-full: 9999px;
+
+  // ─── Layout ────────────────────────────────────────────────────────────────
+  --navbar-height: 68px;
+  --max-w-content: 1320px;
+
+  // ─── Transitions ───────────────────────────────────────────────────────────
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-snappy:   cubic-bezier(0.4, 0, 0.2, 1);
+}

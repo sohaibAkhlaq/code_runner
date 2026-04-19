@@ -1,0 +1,251 @@
+<app-navbar></app-navbar>
+
+<!-- Particle canvas background -->
+<canvas #particleCanvas class="particle-canvas" aria-hidden="true"></canvas>
+
+<!-- Aurora orbs -->
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-bg__orb aurora-bg__orb--1"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--2"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--3"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--4"></div>
+</div>
+
+<div class="page-wrapper" (mousemove)="onMouseMove($event)">
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- HERO SECTION                                                           -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero__container">
+
+      <!-- Left: Copy -->
+      <div class="hero__copy anim-fade-up">
+        <div class="section-eyebrow">
+          <span class="eyebrow-dot"></span>
+          MEAN Stack · Angular 17 · TypeScript
+        </div>
+
+        <h1 class="hero__headline">
+          <span class="hero__headline-line hero__headline-line--gradient">Write Code.</span>
+          <span class="hero__headline-line hero__headline-line--white">Execute Fast.</span>
+          <span class="hero__headline-line hero__headline-line--cyan">Win Interviews.</span>
+        </h1>
+
+        <p class="hero__subtext anim-fade-up anim-delay-2">
+          A production-grade competitive coding platform built on the
+          <strong>MEAN Stack</strong> — MongoDB, Express, Angular 17 &amp; Node.js —
+          with real-time execution, AI hints, and stunning analytics.
+        </p>
+
+        <div class="hero__ctas anim-fade-up anim-delay-3">
+          <a routerLink="/register" class="btn btn--primary btn--xl" id="hero-cta-primary">
+            Start Coding Free
+            <span class="btn-arrow">→</span>
+          </a>
+          <a routerLink="/problems" class="btn btn--ghost btn--xl" id="hero-cta-secondary">
+            <span class="play-icon">▶</span>
+            Browse Problems
+          </a>
+        </div>
+
+        <div class="hero__trust anim-fade-up anim-delay-4">
+          <div class="trust-avatars">
+            @for (i of [1,2,3,4,5]; track i) {
+              <div class="trust-avatar" [style.background]="'hsl(' + (i*60) + ',70%,55%)'">{{ i }}</div>
+            }
+          </div>
+          <span class="trust-text"><strong>2,400+</strong> devs joined this week</span>
+        </div>
+      </div>
+
+      <!-- Right: 3D Code Window -->
+      <div class="hero__visual anim-rotate-3d anim-delay-2" [style.transform]="heroTransform">
+        <div class="code-card">
+          <div class="code-card__glow" aria-hidden="true"></div>
+
+          <!-- Mac dots titlebar -->
+          <div class="code-card__bar">
+            <div class="mac-dots">
+              <span class="mac-dot mac-dot--red"></span>
+              <span class="mac-dot mac-dot--yellow"></span>
+              <span class="mac-dot mac-dot--green"></span>
+            </div>
+            <span class="code-card__filename">
+              <span class="filename-icon">📄</span> solution.ts
+            </span>
+            <span class="code-card__lang">TypeScript</span>
+          </div>
+
+          <!-- Code body -->
+          <div class="code-card__body">
+            <div class="line-nums" aria-hidden="true">
+              @for (n of lineNumbers; track n) {
+                <div class="ln">{{ n }}</div>
+              }
+            </div>
+            <pre class="code-pre"><code class="code-text">{{ typedCode() }}<span class="cursor-blink">█</span></code></pre>
+          </div>
+
+          <!-- Output bar -->
+          <div class="code-card__output">
+            <span class="output-badge output-badge--ok">✅ Accepted</span>
+            <span class="output-meta">45ms · 38.2 MB · Beats 97%</span>
+            <div class="output-bars">
+              <div class="output-bar" style="width:97%"></div>
+            </div>
+          </div>
+
+          <!-- Floating badges -->
+          <div class="float-badge float-badge--tl" aria-hidden="true">
+            <span>⚡</span> 45ms
+          </div>
+          <div class="float-badge float-badge--br" aria-hidden="true">
+            <span>🏆</span> Top 3%
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- STATS BAR                                                              -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="stats-section" aria-label="Platform statistics">
+    <div class="stats-section__inner">
+      @for (stat of stats; track stat.label; let i = $index) {
+        <div class="stat-pill anim-scale-in" [style.animation-delay]="(i * 120) + 'ms'">
+          <span class="stat-pill__value text-gradient">{{ stat.display }}</span>
+          <span class="stat-pill__label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- FEATURES GRID                                                          -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="features-section" id="features" aria-label="Platform features">
+    <div class="features-section__container">
+      <div class="section-label anim-fade-up">
+        <div class="section-eyebrow">
+          <span class="eyebrow-dot"></span> Features
+        </div>
+        <h2 class="section-title anim-fade-up anim-delay-1">
+          Built for <span class="text-gradient-static">Industry-Level</span> Practice
+        </h2>
+        <p class="section-sub anim-fade-up anim-delay-2">
+          Every feature is crafted with MEAN stack best practices — reactive services, typed models, interceptors, and guards.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        @for (f of features; track f.id; let i = $index) {
+          <div class="feature-card anim-fade-up" [style.animation-delay]="(i * 100 + 200) + 'ms'">
+            <div class="feature-card__glow" [style.background]="f.color + '15'"></div>
+            <div class="feature-card__icon" [style.background]="f.accent" [style.color]="f.color">
+              {{ f.icon }}
+            </div>
+            <h3 class="feature-card__title">{{ f.title }}</h3>
+            <p class="feature-card__desc">{{ f.description }}</p>
+            <div class="feature-card__line" [style.background]="'linear-gradient(90deg,' + f.color + ',transparent)'"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- TECH STACK SECTION                                                     -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="tech-section" aria-label="Technology stack">
+    <div class="tech-section__container">
+      <h2 class="section-title text-center anim-fade-up">
+        Powered by the <span class="text-gradient-static">MEAN Stack</span>
+      </h2>
+      <p class="section-sub text-center anim-fade-up anim-delay-1">
+        Full-stack JavaScript — one language, end-to-end.
+      </p>
+
+      <div class="tech-grid anim-fade-up anim-delay-2">
+        @for (t of techStack; track t.name) {
+          <div class="tech-chip">
+            <span class="tech-chip__icon">{{ t.icon }}</span>
+            <span class="tech-chip__name" [style.color]="t.color">{{ t.name }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- TESTIMONIALS                                                            -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="testimonials-section" aria-label="User testimonials">
+    <div class="testimonials-section__container">
+      <h2 class="section-title text-center anim-fade-up">
+        Loved by <span class="text-gradient-static">Engineers</span>
+      </h2>
+
+      <div class="testimonials-grid">
+        @for (t of testimonials; track t.name; let i = $index) {
+          <div class="testimonial-card anim-scale-in" [style.animation-delay]="(i * 150 + 200) + 'ms'">
+            <p class="testimonial-card__text">"{{ t.text }}"</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-avatar">{{ t.avatar }}</div>
+              <div>
+                <div class="testimonial-name">{{ t.name }}</div>
+                <div class="testimonial-role">{{ t.role }}</div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- CTA SECTION                                                             -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <section class="cta-section" aria-label="Get started">
+    <div class="cta-section__container anim-fade-up">
+      <div class="cta-card">
+        <div class="cta-card__glow" aria-hidden="true"></div>
+        <div class="cta-card__grid-bg" aria-hidden="true"></div>
+        <h2 class="cta-card__title">
+          Ready to <span class="text-gradient-static">Level Up?</span>
+        </h2>
+        <p class="cta-card__sub">
+          Join thousands of developers who landed their dream jobs using CodeRunner.
+        </p>
+        <div class="cta-card__actions">
+          <a routerLink="/register" class="btn btn--primary btn--xl" id="cta-signup-btn">
+            Create Free Account →
+          </a>
+          <a routerLink="/problems" class="btn btn--ghost btn--lg" id="cta-problems-btn">
+            Explore Problems
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- FOOTER                                                                  -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo">Code<span class="text-gradient-static">Runner</span></span>
+        <p class="footer__tagline">MEAN Stack · Angular 17 · TypeScript · MongoDB</p>
+      </div>
+      <div class="footer__links">
+        <a routerLink="/problems">Problems</a>
+        <a routerLink="/login">Sign In</a>
+        <a routerLink="/register">Register</a>
+      </div>
+      <p class="footer__copy">© 2026 CodeRunner. Built with Angular 17 & ❤️</p>
+    </div>
+  </footer>
+
+</div>

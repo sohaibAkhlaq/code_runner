@@ -1,0 +1,154 @@
+<app-navbar></app-navbar>
+
+<div class="page-wrapper">
+  <main class="profile-page">
+    <div class="profile-page__container">
+
+      <!-- ── Profile Banner ─────────────────────────────────────────────── -->
+      <div class="profile-banner anim-fade-up">
+        <div class="profile-banner__bg" aria-hidden="true"></div>
+
+        <div class="profile-banner__content">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar">
+              <span>{{ authService.user()?.name?.charAt(0) || 'D' }}</span>
+            </div>
+            <div class="profile-avatar__ring"></div>
+          </div>
+
+          <div class="profile-info">
+            <h1 class="profile-name">{{ authService.user()?.name || 'Developer' }}</h1>
+            <p class="profile-handle">&#64;{{ authService.user()?.username || 'developer' }}</p>
+            <div class="profile-meta-row">
+              <span class="profile-meta-item">📅 Joined {{ authService.user()?.joinedDate || 'March 2026' }}</span>
+              @if (authService.user()?.location) {
+                <span class="profile-meta-item">📍 {{ authService.user()?.location }}</span>
+              }
+              @if (authService.user()?.website) {
+                <span class="profile-meta-item">🔗 {{ authService.user()?.website }}</span>
+              }
+            </div>
+          </div>
+
+          <div class="profile-header-stats">
+            <div class="phs-item">
+              <span class="phs-value text-gradient">42</span>
+              <span class="phs-label">Solved</span>
+            </div>
+            <div class="phs-divider"></div>
+            <div class="phs-item">
+              <span class="phs-value" style="color: var(--warning)">{{ authService.user()?.streak || 7 }}</span>
+              <span class="phs-label">Day Streak 🔥</span>
+            </div>
+            <div class="phs-divider"></div>
+            <div class="phs-item">
+              <span class="phs-value" style="color: var(--success)">90%</span>
+              <span class="phs-label">Success Rate</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Main Grid ──────────────────────────────────────────────────── -->
+      <div class="profile-grid">
+
+        <!-- Left Column -->
+        <div class="profile-col profile-col--left">
+
+          <!-- Skills Card -->
+          <div class="card anim-fade-up">
+            <div class="card__header">
+              <h2 class="card__title">🎯 Skills</h2>
+            </div>
+            <div class="card__body">
+              @for (skill of skills; track skill.name) {
+                <div class="skill-row">
+                  <div class="skill-row__label">
+                    <span class="skill-name">{{ skill.name }}</span>
+                    <span class="skill-pct" [style.color]="skill.color">{{ skill.level }}%</span>
+                  </div>
+                  <div class="skill-bar">
+                    <div class="skill-bar__fill"
+                         [style.width]="skill.level + '%'"
+                         [style.background]="skill.color"
+                         [style.box-shadow]="'0 0 8px ' + skill.color + '60'">
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Achievements Card -->
+          <div class="card anim-fade-up anim-delay-1">
+            <div class="card__header">
+              <h2 class="card__title">🏆 Achievements</h2>
+            </div>
+            <div class="card__body">
+              <div class="achievements-grid">
+                @for (a of achievements; track a.title) {
+                  <div class="achievement-chip" [class.achievement-chip--locked]="!a.earned"
+                       [attr.title]="a.desc">
+                    <span class="achievement-chip__icon">{{ a.icon }}</span>
+                    <span class="achievement-chip__title">{{ a.title }}</span>
+                    @if (!a.earned) { <span class="achievement-chip__lock">🔒</span> }
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="profile-col profile-col--right">
+
+          <!-- Heatmap -->
+          <div class="card anim-fade-up">
+            <div class="card__header">
+              <h2 class="card__title">📅 Activity — Last 90 Days</h2>
+            </div>
+            <div class="card__body">
+              <div class="heatmap-90">
+                @for (cell of heatmapCells; track $index) {
+                  <div
+                    class="heatmap-90__cell"
+                    [style.background]="getHeatmapColor(cell.intensity)"
+                    [style.box-shadow]="cell.intensity > 0.5 ? '0 0 6px rgba(99,102,241,0.3)' : 'none'"
+                    [title]="cell.intensity > 0 ? 'Submissions' : 'No activity'"
+                  ></div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Difficulty Breakdown -->
+          <div class="card anim-fade-up anim-delay-1">
+            <div class="card__header">
+              <h2 class="card__title">📊 Problem Breakdown</h2>
+            </div>
+            <div class="card__body">
+              @for (b of breakdown; track b.label) {
+                <div class="breakdown-row">
+                  <span class="diff-badge" [class]="'diff-badge--' + b.key">{{ b.label }}</span>
+                  <div class="breakdown-bar">
+                    <div class="breakdown-bar__fill" [class]="'breakdown-bar__fill--' + b.key"
+                         [style.width]="b.pct + '%'"></div>
+                  </div>
+                  <span class="breakdown-count">{{ b.solved }}/{{ b.total }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-bg__orb aurora-bg__orb--1"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--3"></div>
+</div>

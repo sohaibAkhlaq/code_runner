@@ -1,0 +1,254 @@
+<app-navbar></app-navbar>
+
+<div class="editor-layout">
+
+  <!-- ── Left Panel: Problem ────────────────────────────────────────────── -->
+  <div class="panel panel--left">
+    <div class="panel__header">
+      <div class="tabs">
+        <button id="tab-desc" class="tab" [class.tab--active]="activeTab() === 'description'" (click)="activeTab.set('description')">
+          📋 Description
+        </button>
+        <button id="tab-hints" class="tab" [class.tab--active]="activeTab() === 'hints'" (click)="activeTab.set('hints')">
+          💡 Hints
+        </button>
+        <button id="tab-subs" class="tab" [class.tab--active]="activeTab() === 'submissions'" (click)="activeTab.set('submissions')">
+          📨 Submissions
+        </button>
+      </div>
+    </div>
+
+    <div class="panel__content panel__content--scroll">
+      @if (problem()) {
+
+        <!-- Description Tab -->
+        @if (activeTab() === 'description') {
+          <div class="problem-content anim-fade-in">
+            <h1 class="problem-title">{{ problem()!.id }}. {{ problem()!.title }}</h1>
+            <div class="problem-meta">
+              <span class="diff-badge" [class]="'diff-badge--' + problem()!.difficulty">
+                {{ problem()!.difficulty | titlecase }}
+              </span>
+              <span class="meta-chip">📊 {{ problem()!.acceptance }}% acceptance</span>
+              <span class="meta-chip">📬 {{ problem()!.submissions | number }} submissions</span>
+            </div>
+
+            <div class="tags-row">
+              @for (tag of problem()!.tags; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+
+            <div class="prose">
+              <p class="prose__text">{{ problem()!.description }}</p>
+
+              @for (ex of problem()!.examples; track ex.id) {
+                <div class="example-block">
+                  <h4 class="example-block__header">
+                    <span class="example-badge">Example {{ ex.id }}</span>
+                  </h4>
+                  <div class="example-box">
+                    <div class="example-row">
+                      <span class="example-label">Input:</span>
+                      <code class="example-code">{{ ex.input }}</code>
+                    </div>
+                    <div class="example-row">
+                      <span class="example-label">Output:</span>
+                      <code class="example-code">{{ ex.output }}</code>
+                    </div>
+                    @if (ex.explanation) {
+                      <div class="example-row">
+                        <span class="example-label">Explanation:</span>
+                        <span class="example-explain">{{ ex.explanation }}</span>
+                      </div>
+                    }
+                  </div>
+                </div>
+              }
+
+              <div class="constraints-block">
+                <h4 class="constraints-block__title">⚙ Constraints</h4>
+                <ul class="constraints-list">
+                  @for (c of problem()!.constraints; track c) {
+                    <li><code class="constraint-code">{{ c }}</code></li>
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Hints Tab -->
+        @if (activeTab() === 'hints') {
+          <div class="hints-content anim-fade-in">
+            @for (hint of problem()!.hints; track hint; let i = $index) {
+              <div class="hint-card">
+                <div class="hint-card__number">{{ i + 1 }}</div>
+                <p class="hint-card__text">{{ hint }}</p>
+              </div>
+            }
+          </div>
+        }
+
+      }
+    </div>
+  </div>
+
+  <!-- ── Center Panel: Code Editor ─────────────────────────────────────── -->
+  <div class="panel panel--center">
+    <div class="panel__header">
+      <div class="editor-header">
+        <select class="lang-select" [ngModel]="language()" (ngModelChange)="onLanguageChange($event)" id="lang-select">
+          <option value="typescript">TypeScript</option>
+          <option value="javascript">JavaScript</option>
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+          <option value="cpp">C++</option>
+        </select>
+        <div class="editor-header__actions">
+          <button class="icon-btn" (click)="resetCode()" title="Reset Code">↺</button>
+          <button class="icon-btn" (click)="copyCode()" title="Copy Code">{{ copied() ? '✅' : '📋' }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel__content panel__content--editor">
+      <div class="code-editor">
+        <div class="code-editor__lines" aria-hidden="true">
+          @for (line of codeLines(); track $index) {
+            <div class="code-editor__ln" [class.code-editor__ln--active]="$index === activeLine()">
+              {{ $index + 1 }}
+            </div>
+          }
+        </div>
+        <textarea
+          id="code-editor-textarea"
+          class="code-editor__area"
+          [ngModel]="code()"
+          (ngModelChange)="code.set($event)"
+          (keydown.tab)="handleTab($event)"
+          (click)="updateActiveLine($event)"
+          spellcheck="false"
+          autocorrect="off"
+          autocapitalize="off"
+        ></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Right Panel: Output ───────────────────────────────────────────── -->
+  <div class="panel panel--right">
+    <div class="panel__header">
+      <div class="tabs">
+        <button class="tab" [class.tab--active]="activeOutputTab() === 'testcases'" (click)="activeOutputTab.set('testcases')">
+          🧪 Testcases
+        </button>
+        <button class="tab" [class.tab--active]="activeOutputTab() === 'result'" (click)="activeOutputTab.set('result')">
+          📊 Result
+          @if (isRunning() || isSubmitting()) {
+            <span class="spinner indicator"></span>
+          }
+        </button>
+      </div>
+    </div>
+
+    <div class="panel__content panel__content--scroll">
+
+      @if (activeOutputTab() === 'testcases' && problem()) {
+        <div class="testcases-content anim-fade-in">
+          <div class="testcase-tabs">
+            @for (ex of problem()!.examples; track ex.id; let i = $index) {
+              <button
+                class="testcase-tab"
+                [class.testcase-tab--active]="activeTestCase() === i"
+                (click)="activeTestCase.set(i)"
+              >
+                Case {{ i + 1 }}
+              </button>
+            }
+          </div>
+
+          @if (problem()!.examples[activeTestCase()]; as ex) {
+            <div class="testcase-vars">
+              <div class="var-block">
+                <div class="var-block__label">Input</div>
+                <div class="var-box">{{ ex.input }}</div>
+              </div>
+              <div class="var-block">
+                <div class="var-block__label">Expected Output</div>
+                <div class="var-box">{{ ex.output }}</div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (activeOutputTab() === 'result') {
+        <div class="result-content anim-fade-in">
+          @if (isRunning() || isSubmitting()) {
+            <div class="result-loading">
+              <span class="spinner spinner--lg"></span>
+              <p class="result-loading__text">
+                {{ isSubmitting() ? 'Submitting...' : 'Executing Code...' }}
+              </p>
+              <p class="result-loading__sub">Running on distributed MEAN stack engine</p>
+            </div>
+          } @else if (hasResult()) {
+            <div class="result-card" [class]="'result-card--' + resultStatus()">
+              <div class="result-card__icon">
+                {{ resultStatus() === 'accepted' ? '✅' : resultStatus() === 'wrong' ? '❌' : '💥' }}
+              </div>
+              <h2 class="result-card__title">
+                {{ resultStatus() === 'accepted' ? 'Accepted!' : resultStatus() === 'wrong' ? 'Wrong Answer' : 'Runtime Error' }}
+              </h2>
+              @if (resultStatus() === 'accepted') {
+                <p class="result-card__sub">Great work! Your solution is optimal.</p>
+                <div class="result-stats">
+                  <div class="r-stat">
+                    <span class="r-stat__val">45ms</span>
+                    <span class="r-stat__label">Runtime</span>
+                  </div>
+                  <div class="r-stat">
+                    <span class="r-stat__val">38.2 MB</span>
+                    <span class="r-stat__label">Memory</span>
+                  </div>
+                  <div class="r-stat">
+                    <span class="r-stat__val">97%</span>
+                    <span class="r-stat__label">Beat</span>
+                  </div>
+                </div>
+              }
+            </div>
+          } @else {
+            <div class="empty-result">
+              <div class="empty-result__icon">▶</div>
+              <p class="empty-result__text">Run your code to see the results here.</p>
+            </div>
+          }
+        </div>
+      }
+
+    </div>
+
+    <!-- Execution Footer -->
+    <div class="execution-bar">
+      <button
+        id="run-code-btn"
+        class="btn btn--ghost btn--md"
+        (click)="runCode()"
+        [disabled]="isRunning() || isSubmitting()"
+      >
+        <span>▶</span> Run
+      </button>
+      <button
+        id="submit-code-btn"
+        class="btn btn--success btn--md"
+        (click)="submitCode()"
+        [disabled]="isRunning() || isSubmitting()"
+      >
+        <span>⬆</span> Submit
+      </button>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,155 @@
+// ─── Core Keyframes ───────────────────────────────────────────────────────────
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0);     }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92) translateY(12px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+@keyframes slideRight {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0);     }
+}
+
+// ─── 3D Effects ───────────────────────────────────────────────────────────────
+
+@keyframes rotateIn3D {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(25deg) translateY(40px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(0deg)  translateY(0)    scale(1);
+  }
+}
+
+@keyframes float3D {
+  0%, 100% { transform: perspective(800px) rotateX(2deg) rotateY(-2deg) translateY(0px); }
+  33%       { transform: perspective(800px) rotateX(-1deg) rotateY(3deg) translateY(-8px); }
+  66%       { transform: perspective(800px) rotateX(3deg) rotateY(-1deg) translateY(-4px); }
+}
+
+@keyframes tiltFloat {
+  0%, 100% { transform: rotateX(4deg) rotateY(-4deg) translateY(0);   }
+  50%       { transform: rotateX(-2deg) rotateY(4deg) translateY(-10px); }
+}
+
+// ─── Glow / Color Animations ──────────────────────────────────────────────────
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px  rgba(99,102,241,0.3), 0 0 0 rgba(99,102,241,0); }
+  50%       { box-shadow: 0 0 24px rgba(99,102,241,0.7), 0 0 48px rgba(99,102,241,0.2); }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { text-shadow: 0 0 8px rgba(99,102,241,0.6), 0 0 20px rgba(99,102,241,0.3); }
+  50%       { text-shadow: 0 0 16px rgba(99,102,241,1), 0 0 40px rgba(168,85,247,0.5), 0 0 80px rgba(99,102,241,0.2); }
+}
+
+@keyframes aurora-drift {
+  0%   { transform: translate(-10%, -10%) scale(1)    rotate(0deg);   opacity: 0.06; }
+  33%  { transform: translate(5%,  -5%)  scale(1.15) rotate(60deg);  opacity: 0.10; }
+  66%  { transform: translate(-5%,  15%) scale(0.9)  rotate(120deg); opacity: 0.07; }
+  100% { transform: translate(-10%, -10%) scale(1)   rotate(0deg);   opacity: 0.06; }
+}
+
+@keyframes border-glow-rotate {
+  from { background-position: 0% 50%;   }
+  to   { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400% center; }
+  100% { background-position:  400% center; }
+}
+
+@keyframes gradient-sweep {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+// ─── Progress / Loading ───────────────────────────────────────────────────────
+
+@keyframes spin-orbit {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes progress-fill {
+  from { width: 0%; }
+}
+
+@keyframes scan-line {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(400%);  opacity: 0; }
+}
+
+// ─── Interactive FX ───────────────────────────────────────────────────────────
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0);   }
+  20%       { transform: translateX(-8px); }
+  40%       { transform: translateX( 8px); }
+  60%       { transform: translateX(-5px); }
+  80%       { transform: translateX( 5px); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes typewriter-cursor {
+  0%, 100% { border-right-color: var(--p-400); }
+  50%       { border-right-color: transparent;  }
+}
+
+@keyframes particle-rise {
+  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-120px) translateX(var(--tx, 20px)) scale(0); opacity: 0; }
+}
+
+@keyframes ripple {
+  0%   { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(4); opacity: 0;   }
+}
+
+@keyframes count-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+// ─── Utility Classes ──────────────────────────────────────────────────────────
+
+.anim-fade-up    { animation: fadeUp    0.6s var(--ease-spring) both; }
+.anim-fade-in    { animation: fadeIn    0.5s ease both; }
+.anim-scale-in   { animation: scaleIn   0.5s var(--ease-spring) both; }
+.anim-slide-left { animation: slideLeft 0.5s var(--ease-spring) both; }
+.anim-rotate-3d  { animation: rotateIn3D 0.7s var(--ease-spring) both; }
+
+@for $i from 1 through 20 {
+  .anim-delay-#{$i}  { animation-delay: #{$i * 80}ms;  }
+}

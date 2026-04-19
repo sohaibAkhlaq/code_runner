@@ -1,0 +1,123 @@
+<app-navbar></app-navbar>
+
+<div class="auth-page">
+  <div class="auth-page__bg" aria-hidden="true">
+    <div class="auth-bg-orb auth-bg-orb--1"></div>
+    <div class="auth-bg-orb auth-bg-orb--2"></div>
+    <div class="auth-grid-lines"></div>
+  </div>
+
+  <div class="auth-container">
+
+    <!-- Left Panel -->
+    <div class="auth-panel auth-panel--left anim-slide-right">
+      <div class="auth-brand">
+        <div class="auth-brand__logo">
+          <div class="auth-brand__logo-core"></div>
+          <div class="auth-brand__logo-ring"></div>
+        </div>
+        <h1 class="auth-brand__name">Code<span class="text-gradient-static">Runner</span></h1>
+      </div>
+      <div class="auth-panel__copy">
+        <h2 class="auth-panel__headline">
+          Level up your<br>
+          <span class="text-gradient-static">coding career</span><br>
+          for free.
+        </h2>
+        <p class="auth-panel__sub">
+          Join 50,000+ engineers who use CodeRunner daily to practice algorithms, prepare for interviews, and track their progress.
+        </p>
+      </div>
+      <div class="auth-panel__features">
+        @for (f of panelFeatures; track f.text) {
+          <div class="auth-feature">
+            <span class="auth-feature__icon">{{ f.icon }}</span>
+            <span class="auth-feature__text">{{ f.text }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Right Panel: Register Form -->
+    <div class="auth-panel auth-panel--right anim-fade-up anim-delay-2">
+      <div class="auth-form-card">
+        <div class="auth-form-card__header">
+          <h2 class="auth-form-card__title">Create account</h2>
+          <p class="auth-form-card__sub">Start your coding journey today — it's free</p>
+        </div>
+
+        <form class="auth-form" (ngSubmit)="onSubmit()" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">👤</span>
+              <input id="name" type="text" class="form-input" [class.error]="nameError()"
+                placeholder="Your name" [(ngModel)]="nameValue" name="name" required autocomplete="name">
+            </div>
+            @if (nameError()) { <span class="form-error">⚠ {{ nameError() }}</span> }
+          </div>
+
+          <div class="form-group">
+            <label for="reg-email">Email address</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">📧</span>
+              <input id="reg-email" type="email" class="form-input" [class.error]="emailError()"
+                placeholder="you@example.com" [(ngModel)]="emailValue" name="email" required autocomplete="email">
+            </div>
+            @if (emailError()) { <span class="form-error">⚠ {{ emailError() }}</span> }
+          </div>
+
+          <div class="form-group">
+            <label for="reg-password">Password</label>
+            <div class="input-wrapper">
+              <span class="input-prefix">🔒</span>
+              <input id="reg-password" [type]="showPassword() ? 'text' : 'password'" class="form-input"
+                [class.error]="passwordError()" placeholder="Min 8 characters"
+                [(ngModel)]="passwordValue" name="password" required autocomplete="new-password">
+              <button type="button" class="input-suffix" (click)="showPassword.set(!showPassword())">
+                {{ showPassword() ? '🙈' : '👁' }}
+              </button>
+            </div>
+            <!-- Password strength -->
+            @if (passwordValue) {
+              <div class="pw-strength">
+                <div class="pw-strength__bar">
+                  <div class="pw-strength__fill" [class]="'pw-strength__fill--' + passwordStrength()"></div>
+                </div>
+                <span class="pw-strength__label" [class]="'pw-label--' + passwordStrength()">
+                  {{ passwordStrengthLabel() }}
+                </span>
+              </div>
+            }
+            @if (passwordError()) { <span class="form-error">⚠ {{ passwordError() }}</span> }
+          </div>
+
+          @if (globalError()) {
+            <div class="auth-alert auth-alert--error">❌ {{ globalError() }}</div>
+          }
+
+          <p class="auth-terms">
+            By registering you agree to our
+            <a href="#" class="auth-switch__link">Terms</a> and
+            <a href="#" class="auth-switch__link">Privacy Policy</a>.
+          </p>
+
+          <button type="submit" class="btn btn--primary btn--lg auth-submit-btn"
+            id="register-submit-btn" [disabled]="isLoading()">
+            @if (isLoading()) {
+              <span class="spinner"></span> Creating account...
+            } @else {
+              Create Free Account →
+            }
+          </button>
+        </form>
+
+        <p class="auth-switch">
+          Already have an account?
+          <a routerLink="/login" class="auth-switch__link">Sign in →</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

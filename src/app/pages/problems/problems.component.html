@@ -1,0 +1,134 @@
+<app-navbar></app-navbar>
+
+<div class="page-wrapper">
+  <main class="problems-page">
+    <div class="problems-page__container">
+
+      <!-- ── Page Header ──────────────────────────────────────────────────── -->
+      <div class="page-header anim-fade-up">
+        <div class="section-eyebrow">
+          <span class="eyebrow-dot"></span> Problem Set
+        </div>
+        <h1 class="page-title">
+          Master <span class="text-gradient-static">Algorithms</span>
+        </h1>
+        <p class="page-desc">
+          {{ filteredProblems().length }} problems · Sorted by popularity · Updated daily
+        </p>
+      </div>
+
+      <!-- ── Filters Bar ──────────────────────────────────────────────────── -->
+      <div class="filters anim-fade-up anim-delay-1">
+        <div class="search-box">
+          <span class="search-box__icon">🔍</span>
+          <input
+            id="problems-search"
+            type="text"
+            class="search-box__input"
+            placeholder="Search problems by name or tag..."
+            [ngModel]="searchQuery()"
+            (ngModelChange)="searchQuery.set($event)"
+            autocomplete="off"
+          >
+          @if (searchQuery()) {
+            <button class="search-box__clear" (click)="searchQuery.set('')" aria-label="Clear search">✕</button>
+          }
+        </div>
+
+        <div class="filter-chips">
+          @for (d of difficulties; track d.value) {
+            <button
+              class="filter-chip"
+              [class.filter-chip--active]="difficultyFilter() === d.value"
+              (click)="difficultyFilter.set(d.value)"
+              [id]="'filter-' + d.value"
+            >
+              <span class="filter-chip__dot" [class]="'dot-' + d.value"></span>
+              {{ d.label }}
+              <span class="filter-chip__count">{{ getCount(d.value) }}</span>
+            </button>
+          }
+        </div>
+
+        <div class="filter-right">
+          <select class="select-tag" [ngModel]="tagFilter()" (ngModelChange)="tagFilter.set($event)" id="tag-filter">
+            <option value="all">All Topics</option>
+            @for (tag of allTags; track tag) {
+              <option [value]="tag">{{ tag }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- ── Problems Table ───────────────────────────────────────────────── -->
+      <div class="problems-table anim-fade-up anim-delay-2">
+        <!-- Header -->
+        <div class="problems-table__header">
+          <div class="col-num">#</div>
+          <div class="col-title">Problem</div>
+          <div class="col-tags">Topics</div>
+          <div class="col-diff">Difficulty</div>
+          <div class="col-acc">Acceptance</div>
+          <div class="col-action"></div>
+        </div>
+
+        <!-- Rows -->
+        @for (problem of filteredProblems(); track problem.id; let i = $index) {
+          <a
+            [routerLink]="['/problems', problem.slug]"
+            class="problem-row anim-fade-up"
+            [class]="'problem-row--' + problem.difficulty"
+            [style.animation-delay]="(i * 40 + 100) + 'ms'"
+            [id]="'problem-' + problem.id"
+          >
+            <div class="col-num">
+              <span class="problem-num">{{ problem.id }}</span>
+            </div>
+            <div class="col-title">
+              <span class="problem-name">{{ problem.title }}</span>
+              @if (problem.acceptance > 80) {
+                <span class="hot-badge">🔥 Popular</span>
+              }
+            </div>
+            <div class="col-tags">
+              @for (tag of problem.tags.slice(0,2); track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+            <div class="col-diff">
+              <span class="diff-badge" [class]="'diff-badge--' + problem.difficulty">
+                {{ problem.difficulty | titlecase }}
+              </span>
+            </div>
+            <div class="col-acc">
+              <div class="acc-bar">
+                <div class="acc-bar__fill" [class]="'acc-bar__fill--' + problem.difficulty"
+                     [style.width]="problem.acceptance + '%'"></div>
+              </div>
+              <span class="acc-num">{{ problem.acceptance }}%</span>
+            </div>
+            <div class="col-action">
+              <span class="solve-btn">Solve →</span>
+            </div>
+          </a>
+        }
+
+        <!-- Empty State -->
+        @if (filteredProblems().length === 0) {
+          <div class="empty-state">
+            <div class="empty-state__icon">🔍</div>
+            <h3 class="empty-state__title">No problems found</h3>
+            <p class="empty-state__desc">Try a different search term or filter.</p>
+            <button class="btn btn--ghost btn--sm" (click)="clearFilters()">Clear Filters</button>
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-bg__orb aurora-bg__orb--1"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--2"></div>
+</div>

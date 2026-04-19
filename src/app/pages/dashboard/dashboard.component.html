@@ -1,0 +1,190 @@
+<app-navbar></app-navbar>
+
+<div class="page-wrapper">
+  <main class="dashboard">
+    <div class="dashboard__container">
+
+      <!-- ── Welcome Banner ───────────────────────────────────────────────── -->
+      <div class="welcome-banner anim-fade-up">
+        <div class="welcome-banner__bg" aria-hidden="true"></div>
+        <div class="welcome-banner__content">
+          <div class="welcome-banner__left">
+            <h1 class="welcome-title">
+              Welcome back, <span class="text-gradient">{{ (authService.user()?.name || 'Developer').split(' ')[0] }}</span>! 👋
+            </h1>
+            <div class="welcome-meta">
+              <span class="streak-badge">
+                🔥 <strong>{{ authService.user()?.streak || 7 }}</strong> day streak
+              </span>
+              <span class="divider">·</span>
+              <span class="date-label">{{ today }}</span>
+            </div>
+          </div>
+          <div class="welcome-banner__actions">
+            <a routerLink="/problems" class="btn btn--ghost btn--sm">Browse Problems</a>
+            <a routerLink="/problems/two-sum" class="btn btn--primary btn--sm" id="quick-submit-btn">
+              + Quick Solve
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Stats Grid ────────────────────────────────────────────────────── -->
+      <div class="stats-grid">
+        @for (stat of stats(); track stat.key; let i = $index) {
+          <div class="stat-card anim-scale-in" [style.animation-delay]="(i * 80 + 100) + 'ms'">
+            <div class="stat-card__glow" [style.background]="stat.accent + '20'"></div>
+            <div class="stat-card__accent-bar" [style.background]="stat.accent"></div>
+            <div class="stat-card__icon">{{ stat.icon }}</div>
+            <div class="stat-card__label">{{ stat.label }}</div>
+            <div class="stat-card__value" [style.color]="stat.accent">{{ stat.value }}</div>
+            <div class="stat-card__delta">{{ stat.delta }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- ── Main Layout ───────────────────────────────────────────────────── -->
+      <div class="dashboard__main">
+
+        <!-- Left Column -->
+        <div class="dashboard__col dashboard__col--left">
+
+          <!-- Recent Activity -->
+          <div class="card anim-fade-up">
+            <div class="card__header">
+              <h2 class="card__title">Recent Submissions</h2>
+              <a routerLink="/submissions" class="card__link">View All →</a>
+            </div>
+            <div class="card__body">
+              @for (item of recentActivity(); track item.id) {
+                <div class="activity-row">
+                  <span class="status-badge" [class]="'status-badge--' + item.status">
+                    {{ item.status | uppercase }}
+                  </span>
+                  <div class="activity-row__info">
+                    <a [routerLink]="['/problems', 'two-sum']" class="activity-row__name">
+                      {{ item.problemName }}
+                    </a>
+                    <span class="activity-row__time">{{ item.date }}</span>
+                  </div>
+                  <span class="lang-chip" [class]="'lang-chip--' + item.language">
+                    {{ item.language | uppercase }}
+                  </span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- Activity Heatmap -->
+          <div class="card anim-fade-up anim-delay-2">
+            <div class="card__header">
+              <h2 class="card__title">Activity Heatmap</h2>
+              <span class="card__sub">Last 7 weeks</span>
+            </div>
+            <div class="card__body">
+              <div class="heatmap">
+                <div class="heatmap__labels">
+                  @for (day of ['Mo','Tu','We','Th','Fr','Sa','Su']; track day) {
+                    <div class="heatmap__day-label">{{ day }}</div>
+                  }
+                </div>
+                <div class="heatmap__grid">
+                  @for (cell of heatmapCells; track $index) {
+                    <div
+                      class="heatmap__cell"
+                      [style.background]="getHeatmapColor(cell.intensity)"
+                      [style.box-shadow]="getHeatmapGlow(cell.intensity)"
+                      [title]="(cell.count) + ' submissions'"
+                    ></div>
+                  }
+                </div>
+                <div class="heatmap__legend">
+                  <span>Less</span>
+                  @for (c of heatmapLegend; track c) {
+                    <div class="heatmap__legend-cell" [style.background]="c"></div>
+                  }
+                  <span>More</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="dashboard__col dashboard__col--right">
+
+          <!-- Progress Ring -->
+          <div class="card card--compact anim-fade-up">
+            <div class="card__header">
+              <h2 class="card__title">Progress</h2>
+            </div>
+            <div class="card__body progress-body">
+              <div class="progress-ring-wrap">
+                <svg class="progress-ring" viewBox="0 0 120 120">
+                  <circle class="progress-ring__track" cx="60" cy="60" r="50" />
+                  <circle
+                    class="progress-ring__fill"
+                    cx="60" cy="60" r="50"
+                    [style.stroke-dashoffset]="progressOffset"
+                  />
+                </svg>
+                <div class="progress-ring__center">
+                  <div class="progress-ring__pct">42%</div>
+                  <div class="progress-ring__sub">Solved</div>
+                </div>
+              </div>
+              <div class="progress-breakdown">
+                @for (b of breakdown; track b.label) {
+                  <div class="breakdown-row">
+                    <span class="diff-badge" [class]="'diff-badge--' + b.key">{{ b.label }}</span>
+                    <div class="breakdown-bar">
+                      <div class="breakdown-bar__fill"
+                           [class]="'breakdown-bar__fill--' + b.key"
+                           [style.width]="b.pct + '%'">
+                      </div>
+                    </div>
+                    <span class="breakdown-count">{{ b.solved }}/{{ b.total }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommended Problems -->
+          <div class="card anim-fade-up anim-delay-1">
+            <div class="card__header">
+              <h2 class="card__title">Recommended</h2>
+              <a routerLink="/problems" class="card__link">All →</a>
+            </div>
+            <div class="card__body">
+              @for (problem of recommended(); track problem.id) {
+                <div class="problem-row-mini">
+                  <span class="diff-badge" [class]="'diff-badge--' + problem.difficulty">
+                    {{ problem.difficulty | titlecase }}
+                  </span>
+                  <div class="problem-row-mini__info">
+                    <a [routerLink]="['/problems', problem.slug]" class="problem-row-mini__name">
+                      {{ problem.title }}
+                    </a>
+                    <span class="problem-row-mini__meta">{{ problem.acceptance }}% acceptance</span>
+                  </div>
+                  <a [routerLink]="['/problems', problem.slug]" class="problem-row-mini__cta">
+                    Solve →
+                  </a>
+                </div>
+              }
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-bg__orb aurora-bg__orb--1"></div>
+  <div class="aurora-bg__orb aurora-bg__orb--3"></div>
+</div>

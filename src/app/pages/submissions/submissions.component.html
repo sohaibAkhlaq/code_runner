@@ -1,0 +1,61 @@
+<app-navbar></app-navbar>
+
+<div class="page-wrapper">
+  <main class="submissions-page">
+    <div class="submissions-page__container">
+
+      <div class="page-header anim-fade-up">
+        <div class="section-eyebrow"><span class="eyebrow-dot"></span> My Work</div>
+        <h1 class="page-title">Submissions</h1>
+        <p class="page-desc">All {{ submissions().length }} of your code submissions</p>
+      </div>
+
+      <!-- Summary Bar -->
+      <div class="summary-bar anim-fade-up anim-delay-1">
+        @for (s of summary; track s.label) {
+          <div class="summary-card">
+            <div class="summary-card__icon" [style.color]="s.color">{{ s.icon }}</div>
+            <div class="summary-card__val" [style.color]="s.color">{{ s.value }}</div>
+            <div class="summary-card__label">{{ s.label }}</div>
+          </div>
+        }
+      </div>
+
+      <!-- Table -->
+      <div class="submissions-table anim-fade-up anim-delay-2">
+        <div class="submissions-table__header">
+          <div class="col-status">Status</div>
+          <div class="col-problem">Problem</div>
+          <div class="col-lang">Language</div>
+          <div class="col-time">Runtime</div>
+          <div class="col-mem">Memory</div>
+          <div class="col-when">Submitted</div>
+        </div>
+
+        @for (s of submissions(); track s.id; let i = $index) {
+          <div class="submission-row anim-fade-up" [style.animation-delay]="(i * 40 + 100) + 'ms'">
+            <div class="col-status">
+              <span class="status-badge" [class]="'status-badge--' + s.status">
+                {{ s.status | uppercase }}
+              </span>
+            </div>
+            <div class="col-problem">
+              <a [routerLink]="['/problems', 'two-sum']" class="sub-problem-link">{{ s.problemName }}</a>
+            </div>
+            <div class="col-lang">
+              <span class="lang-chip" [class]="'lang-chip--' + s.language">{{ s.language }}</span>
+            </div>
+            <div class="col-time sub-mono">{{ s.time }}</div>
+            <div class="col-mem  sub-mono">{{ s.memory }}</div>
+            <div class="col-when sub-meta">{{ s.date }}</div>
+          </div>
+        }
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<div class="aurora-bg" aria-hidden="true">
+  <div class="aurora-bg__orb aurora-bg__orb--2"></div>
+</div>

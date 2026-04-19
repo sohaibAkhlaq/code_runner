@@ -1,0 +1,61 @@
+<!-- ════════════════════════════════════════════════════════════════════
+     NAVBAR - CodeRunner Premium Navigation
+   ════════════════════════════════════════════════════════════════════ -->
+<nav class="navbar" [class.navbar--scrolled]="isScrolled()" role="navigation" aria-label="Main navigation">
+
+  <!-- Glass shimmer line at top -->
+  <div class="navbar__shine" aria-hidden="true"></div>
+
+  <!-- Brand -->
+  <a routerLink="/" class="navbar__brand" aria-label="CodeRunner home">
+    <div class="navbar__logo" aria-hidden="true">
+      <div class="navbar__logo-core"></div>
+      <div class="navbar__logo-ring"></div>
+    </div>
+    <span class="navbar__wordmark">Code<span class="navbar__wordmark-accent">Runner</span></span>
+  </a>
+
+  <!-- Nav Links -->
+  <div class="navbar__links" [class.navbar__links--open]="isMenuOpen()">
+    @for (item of navItems; track item.route) {
+      <a
+        [routerLink]="item.route"
+        routerLinkActive="navbar__link--active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+        class="navbar__link"
+        [attr.data-label]="item.label"
+      >
+        <span class="navbar__link-icon">{{ item.icon }}</span>
+        {{ item.label }}
+      </a>
+    }
+  </div>
+
+  <!-- Actions -->
+  <div class="navbar__actions">
+    @if (authService.isAuthenticated()) {
+      <a routerLink="/dashboard" class="btn btn--ghost btn--sm">Dashboard</a>
+      <a routerLink="/profile" class="navbar__avatar" [attr.aria-label]="'Profile: ' + authService.user()?.name">
+        <span>{{ authService.user()?.name?.charAt(0) || 'U' }}</span>
+        <div class="navbar__avatar-ring"></div>
+      </a>
+      <button class="btn btn--ghost btn--sm navbar__logout" (click)="logout()">
+        <span>⏻</span>
+      </button>
+    } @else {
+      <a routerLink="/login"    class="btn btn--ghost btn--sm" id="nav-signin-btn">Sign In</a>
+      <a routerLink="/register" class="btn btn--primary btn--sm" id="nav-cta-btn">Start Free →</a>
+    }
+
+    <button
+      id="nav-hamburger-btn"
+      class="navbar__hamburger"
+      (click)="toggleMenu()"
+      [class.navbar__hamburger--open]="isMenuOpen()"
+      [attr.aria-expanded]="isMenuOpen()"
+      aria-label="Toggle navigation menu"
+    >
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
