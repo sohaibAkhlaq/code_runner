@@ -28,6 +28,9 @@ jobs:
       - name: Build 🏗️
         run: npm run build -- --base-href /code_runner-main/
 
+      - name: Fix SPA Routing 🛠️
+        run: cp dist/code-runner/browser/index.html dist/code-runner/browser/404.html
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
